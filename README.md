@@ -28,6 +28,6 @@
 3. Metrics,
 
 ### Configurações finais
-- onfigurar um OpenTelemetry Collector
+- Configurar um OpenTelemetry Collector
 - Receber telemetria via OTLP
 - Processar dados (batch, memory limiter, etc.)
