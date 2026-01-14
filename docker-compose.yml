@@ -1,0 +1,16 @@
+version: "3.9"
+
+services:
+  server-api:
+    build: ./server-api/
+    ports:
+      - "5000:5000"
+    restart: unless-stopped
+
+  client-api:
+    build: ./client-api/
+    ports:
+      - "5001:5001"
+    depends_on:
+      - server-api
+    restart: unless-stopped
