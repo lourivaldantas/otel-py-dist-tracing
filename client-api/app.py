@@ -1,12 +1,11 @@
+import logging
 import requests
 from flask import Flask
 
 # --- OpenTelemetry ---
 from opentelemetry.sdk.resources import SERVICE_NAME, Resource
-
 from opentelemetry.instrumentation.flask import FlaskInstrumentor
 from opentelemetry.instrumentation.requests import RequestsInstrumentor
-
 from opentelemetry import trace, metrics
 
 # tracer
@@ -20,7 +19,6 @@ from opentelemetry.sdk.metrics import MeterProvider
 from opentelemetry.sdk.metrics.export import PeriodicExportingMetricReader
 
 #logs
-import logging
 from opentelemetry.sdk._logs import LoggerProvider, LoggingHandler
 from opentelemetry.sdk._logs.export import BatchLogRecordProcessor
 from opentelemetry.exporter.otlp.proto.http._log_exporter import OTLPLogExporter

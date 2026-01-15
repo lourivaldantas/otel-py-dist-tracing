@@ -27,7 +27,18 @@
 2.  Logs (em formato json),
 3. Metrics,
 
-### Configurações finais
+### Outras configurações
 - Configurar um OpenTelemetry Collector
 - Receber telemetria via OTLP
 - Processar dados (batch, memory limiter, etc.)
+
+## Integrar a Coralogix
+- Integrar a aplicação instrumentalizada a Coralogix.
+
+### Modelo de .env
+```
+CORALOGIX_DOMAIN={seu domínio}
+CORALOGIX_PRIVATE_{sua chave}
+CORALOGIX_APP_NAME={nome da aplicação}
+CORALOGIX_SUB_NAME={subnome da aplicação}
+```

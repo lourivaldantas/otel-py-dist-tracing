@@ -12,8 +12,16 @@ processors:
     limit_mib: 4000
     spike_limit_mib: 800
   batch:
+  resourcedetection:
+    detectors: [env, system]
 
 exporters:
+  coralogix:
+    domain: "${CORALOGIX_DOMAIN}"
+    private_key: "${CORALOGIX_PRIVATE_KEY}"
+    application_name: "${CORALOGIX_APP_NAME}"
+    subsystem_name: "${CORALOGIX_SUB_NAME}"
+
   debug:
     verbosity: detailed
 
@@ -31,12 +39,12 @@ service:
     traces:
       receivers: [otlp]
       processors: [memory_limiter, batch]
-      exporters: [debug]
+      exporters: [coralogix, debug]
     metrics:
       receivers: [otlp]
       processors: [memory_limiter, batch]
-      exporters: [debug]
+      exporters: [coralogix, debug]
     logs:
       receivers: [otlp]
       processors: [memory_limiter, batch]
-      exporters: [debug]
+      exporters: [coralogix, debug]

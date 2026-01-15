@@ -1,6 +1,8 @@
 services:
   server-api:
     build: ./server-api/
+    env_file:
+    - .env
     ports:
       - "5000:5000"
     depends_on:
@@ -9,6 +11,9 @@ services:
 
   client-api:
     build: ./client-api/
+    env_file:
+    - .env
+
     ports:
       - "5001:5001"
     depends_on:
@@ -17,10 +22,12 @@ services:
     restart: unless-stopped
 
   otel-collector:
-    image: otel/opentelemetry-collector
+    image: otel/opentelemetry-collector-contrib:0.94.0
     command: ["--config=/etc/otelcol/config.yaml"]
     volumes:
       - ./otel-collector-config.yaml:/etc/otelcol/config.yaml
+    env_file:
+      - .env
     ports:
       - 4317:4317 # OTLP gRPC receiver
       - 4318:4318 # OTLP http receiver
