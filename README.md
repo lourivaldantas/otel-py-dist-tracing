@@ -27,6 +27,7 @@ O projeto utiliza variáveis de ambiente para gerenciar credenciais. Crie o arqu
 cp .env.example .env
 ```
 Preencha as variáveis com seus dados da Coralogix:
+
 `CORALOGIX_PRIVATE_KEY`
 
 `CORALOGIX_DOMAIN`
