@@ -1,44 +1,58 @@
-# Client Server API Docker
-> Sistema de duas APIs (Cliente/Servidor) integradas via Docker Network.
+# 🌐 Client-Server API: Observability with OpenTelemetry & Coralogix
 
-## Criar duas APIs
-### 1. server-api:
-- Expor a rota GET /users,
-- Essa rota deve consumir a API externa: https://jsonplaceholder.typicode.com/users,
-    
-### 2. client-api:
-- Expor a rota GET /getUsers
-- Essa rota deve chamar a API server, que por sua vez chama a API externa,
+> Este projeto demonstra a implementação de um ecossistema de microserviços (Cliente/Servidor) focado em Observabilidade Full-stack. O objetivo principal é validar a propagação de contexto, coleta de telemetria distribuída e integração com a Coralogix utilizando o OpenTelemetry SDK.
 
+## 🏗️ Arquitetura do Sistema
 
-## Objetivos
-### Inicial
-- Garantir propagação de contexto entre:
-- client-api → server-api → API externa,
+O fluxo de dados segue o seguinte percurso para garantir o rastreamento ponta a ponta:
+1. **Client-API:** Recebe a requisição inicial e inicia o Root Span.
+2. **Server-API:** Recebe a chamada via Docker Network, mantendo a continuidade do trace.
+3. **External API:** Consumo de dados via JSONPlaceholder.
+4. **OTel Collector:** Centraliza, processa e exporta os dados (Traces, Logs e Metrics) para a Coralogix via OTLP.
 
-### Container Docker
-- Configurar ambas as APIs com:
-1. Dockerfile
-2. docker-compose (opcional, mas desejável),
+## 🛠️ Tecnologias e Ferramentas
+- **Linguagem:** Python 3.x (Flask)
+- **Instrumentação:** OpenTelemetry SDK (Python)
+- **Containerização:** Docker & Docker Compose
+- **Observabilidade:**
+    - ***Traces:*** Rastreamento distribuído entre serviços.
+    - ***Logs:*** Estruturados em formato JSON para melhor processamento.
+    - ***Metrics:*** Monitoramento de performance e saúde das APIs.
+- **Backend:** Coralogix via protocolo OTLP.
 
-### Instrumentalização
-- Instrumentar ambas as APIs com OpenTelemetry (SDK), gerando:
-1. Traces
-2.  Logs (em formato json),
-3. Metrics,
-
-### Outras configurações
-- Configurar um OpenTelemetry Collector
-- Receber telemetria via OTLP
-- Processar dados (batch, memory limiter, etc.)
-
-## Integrar a Coralogix
-- Integrar a aplicação instrumentalizada a Coralogix.
-
-### Modelo de .env
+## 🚀 Como Executar
+### 1. Configuração de Ambiente
+O projeto utiliza variáveis de ambiente para gerenciar credenciais. Crie o arquivo .env baseado no exemplo:
+```bash
+cp .env.example .env
 ```
-CORALOGIX_DOMAIN={seu domínio}
-CORALOGIX_PRIVATE_{sua chave}
-CORALOGIX_APP_NAME={nome da aplicação}
-CORALOGIX_SUB_NAME={subnome da aplicação}
+Preencha as variáveis com seus dados da Coralogix:
+`CORALOGIX_PRIVATE_KEY`
+
+`CORALOGIX_DOMAIN`
+
+`APPLICATION_NAME`
+
+`SUBSYSTEM_NAME`
+### 2. Subir os Containers
+```bash
+docker-compose up -d --build
 ```
+
+## 📊 Endpoints Disponíveis
+
+| Serviço | Rota | Descrição |
+| :---: | :---: | :---: |
+| Client API | GET /getUsers | Inicia o fluxo chamando a Server API. |
+| Server API | GET /users | Consome a API externa e retorna a lista de usuários. |
+
+## 🔍 Detalhes da Instrumentação
+
+### OpenTelemetry Collector
+Configurado para atuar como gateway, processando dados em lote (batch) e limitando o uso de memória (memory_limiter) antes de exportar para o endpoint OTLP da Coralogix.
+
+## 📈 Integração Coralogix
+Ao rodar o projeto, os seguintes recursos ficam disponíveis:
+- **Service Map:** Visualização automática das dependências.
+- **Distributed Tracing:** Análise de latência entre o cliente e o servidor.
+- **Custom Dashboards:** Gráficos baseados nas métricas de runtime capturadas.

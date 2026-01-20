@@ -4,11 +4,8 @@ WORKDIR /apps
 
 COPY requirements.txt .
 
-RUN apk update && \
-    pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-COPY app.py .
-
-EXPOSE 5001
+COPY . .
 
 CMD [ "flask", "--app", "app.py", "run", "--host=0.0.0.0", "--port", "5001" ]
